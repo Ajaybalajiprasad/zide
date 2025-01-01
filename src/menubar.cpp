@@ -10,13 +10,14 @@ void render_main_menu_bar() {
     if (ImGui::BeginMenu("File")) {
       if (ImGui::MenuItem("New", "CTRL+N")) {
       }
-      if (ImGui::MenuItem("Open", "CTRL+O")) {
+      if (ImGui::MenuItem("Open", "CTRL+O")) { 
       }
       if (ImGui::MenuItem("Export", "F2")) {
         save_screenshot(&app_state.editor_state);
       }
       ImGui::Separator();
       if (ImGui::MenuItem("Exit", "CTRL+X")) {
+        exit(0);
       }
     	if (ImGui::BeginMenu("Import")) {
       	if (ImGui::MenuItem("Color palete", "CTRL+SHIFT+C")) {
@@ -49,9 +50,38 @@ void render_main_menu_bar() {
       }
       ImGui::EndMenu();
     }
+    if (ImGui::BeginMenu("Help")) {
+      app_state.show_about_dialog = true;
+      ImGui::EndMenu();
+    } 
+
+    float windowWidth = ImGui::GetWindowWidth();
+    float buttonWidth = 30.0f;
+    ImGui::SameLine(windowWidth - buttonWidth - ImGui::GetStyle().WindowPadding.x);
+    if (ImGui::Button("X", ImVec2(buttonWidth, 0))) {
+      exit(0);
+    }
     ImGui::EndMainMenuBar();
   }
   if (app_state.editor_state.changing_dimensions) {
     render_dimensions_select();
   }
+
+  ImGuiIO& io = ImGui::GetIO();
+  if ((io.KeyCtrl || (io.KeyMods & ImGuiKey_ModCtrl)) && ImGui::IsKeyPressed(ImGuiKey_X)) {
+    exit(0);
+  }
+
+  if (app_state.show_about_dialog) {
+        ImGui::Begin("About Zide", &app_state.show_about_dialog, ImGuiWindowFlags_AlwaysAutoResize);
+        ImGui::Text("Zide is a Design environment\nVersion xx.x");
+        ImGui::Text("Click");
+        ImGui::SameLine();
+        if (ImGui::Button("here")) {
+          system("xdg-open https://github.com/bitspaceorg/zide");
+        }
+        ImGui::SameLine();
+        ImGui::Text("to Know more About us.");
+        ImGui::End();
+    }
 }

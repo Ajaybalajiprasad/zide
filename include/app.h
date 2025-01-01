@@ -79,6 +79,7 @@ struct AppState {
   bool is_timeline_visible = true;
   bool is_toolbar_visible = true;
   bool is_colorswatch_visible = true;
+  bool show_about_dialog = false;
   ToolbarState toolbar_state;
   TimelineState timeline_state;
   ColorSwatchState color_swatch_state = {
